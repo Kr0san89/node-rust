@@ -1,0 +1,20 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v3
+     - name: Docker Login
+       uses: docker/login-action@v3.0.0
+       with:
+         username: ${{ env.DOCKER_USER }}
+         password: ${{ secrets.DOCKER_TOKEN }}l 
+     - name: Build & Publish the Docker 18 image
+       run: docker build 18/. --progress plain -t krosan89/node-rust:18 && docker push krosan89/node-rust:18
+     - name: Build the Docker 20 image
+       run: docker build 20/. --progress plain -t krosan89/node-rust:20 -t krosan89/node-rust:latest && docker push krosan89/node-rust:20
