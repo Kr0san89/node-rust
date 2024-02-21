@@ -16,7 +16,10 @@ jobs:
        with:
          username: ${{ secrets.DOCKER_USER }}
          password: ${{ secrets.DOCKER_TOKEN }}
-     - name: Build & Publish the Docker 18 image
-       run: docker build 18/. --progress plain -t krosan89/node-rust:18 && docker push krosan89/node-rust:18
-     - name: Build the Docker 20 image
-       run: docker build 20/. --progress plain -t krosan89/node-rust:20 -t krosan89/node-rust:latest && docker push krosan89/node-rust:20
+     - name: Build & Publish Docker Images
+       run: |
+         for i in $(ls -d */ | cut -f1 -d'/')
+         do
+            echo "Build & Publish: $i"
+            docker build $i/. --progress plain -t krosan89/node-rust:$i && docker push krosan89/node-rust:$i
+         done
