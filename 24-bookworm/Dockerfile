@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:24-bookworm
 
 # get dependencies
 RUN apt-get update && apt-get install -y curl wget && apt-get clean
@@ -10,11 +10,11 @@ RUN RUSTUP_URL="https://sh.rustup.rs" \
   && rm /tmp/rustup-linux-install.sh
 
 RUN find / -name rustup
-  
+
 # add windows target
 RUN ${HOME}/.cargo/bin/rustup target add x86_64-pc-windows-msvc
 
-ENV PATH /root/.cargo/bin:${PATH}  
+ENV PATH /root/.cargo/bin:${PATH}
 
 # get versions
 CMD rustc --version && echo -n "Node:"; node --version
